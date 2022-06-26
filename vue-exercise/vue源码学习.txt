@@ -1,0 +1,2 @@
+1、Vue data初始化
+   props -> methods -> data -> computed -> watch

@@ -1,0 +1,74 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: sueRimn
+ * @Date: 2021-07-02 09:29:17
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-08-03 14:39:02
+-->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/dist/umd/vue.js"></script>
+</head>
+
+<body>
+    <div id="app" style="border: 1px solid #000;">
+        hello
+
+        <p>{{name}}</p>
+        <p>{{age}}</p>
+        <p>{{arr}}</p>
+        <my-component2/>
+    </div>
+    <script defer>
+        // 更改组件的合并策略，能合并组件
+        let vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name:'hello',
+                    age:'100',
+                    arr:[[[[1,2]]],1,2,3]
+                }
+            },
+            components:{
+                ['my-component2']:{
+                    template:'<div>你好<heihei /></div>',
+                    components:{
+                        heihei:{
+                            template:'<div>深层组件</div>'
+                        }
+                    }
+                }
+            }
+            // computed() { },
+            // beforeCreate() {
+            //     console.log('before create')
+            // },
+            // created(){
+            //     console.log(this.age)
+            //     //数据已经生成但尚未渲染成dom对象
+            //     console.log('el',this.$el)
+            // },
+            // beforeMount() {
+            //     console.log(this.$el,'渲染前的页面')
+            // },
+            // mounted() {
+            //     console.log(this.$el,'已经渲染到页面上')
+            // },
+        })
+        setTimeout(() => {
+            vm.arr.push(4)
+        }, 2000);
+        // 每个组件在使用时都会调用Vue.extend方法 创建一个构造函数
+        // 实例化子组件时 会将当前选项和用户定义选项合并 mergeOptions
+        // 通过创建实例 内部会调用子类的_init()
+     </script>
+</body>
+
+</html>
