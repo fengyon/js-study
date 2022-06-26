@@ -1,0 +1,33 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <div style="height: 50px;" class="border" style="border-bottom:none">
+    </div>
+    <div style="height: calc(100% - 50px);width: 100%;display: flex;flex-direction: row;">
+      <div style="width: 200px;" class="border">
+      </div>
+      <div style="width: calc(100% - 200px)">
+        <div style="height: calc(100% - 50px);background-color: blue;" class="border"></div>
+        <div style="height: 50px;background-color: red;" class="border"></div>
+      </div>
+    </div>
+  </div>
+  <style>
+    div{
+      box-sizing: border-box;
+    }
+    .border {
+      border: 1px solid black;
+    }
+  </style>
+</body>
+
+</html>

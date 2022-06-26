@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    {{ name + time + '\n' + timeMS}}
+  </div>
+  <script>
+    var vm = {
+      _dom: document.getElementById('app'), options: {
+        name: "bilibili",
+        time: new Date().toLocaleTimeString(),
+        timeMS: new Date().getTime()
+      }
+    };
+    init(vm);
+    function init(vm) {
+      const options = vm.options;
+      let template = vm._dom.innerHTML.match(/\{\{([^\}]+)/);
+      vm._template = template[1].trim();
+      vm.render = new Function(`with(this){ return ${vm._template}}`);
+      vm._data = { ...options };
+      for (let key in options) {
+        Object.defineProperty(vm, key, {
+          set(newVal) {
+            vm._data[key] = newVal;
+            forceUpdate(vm);
+          },
+          get() {
+            return vm._data[key];
+          }
+        })
+      }
+      forceUpdate(vm);
+    }
+    function fresh() {
+      vm.time = new Date().toLocaleTimeString();
+      vm.timeMS = new Date().getTime()
+      window.requestAnimationFrame(fresh);
+    }
+    fresh();
+    function forceUpdate(vm) {
+      let innerHTML = vm.render();
+      vm._dom.innerHTML = innerHTML;
+    }
+  </script>
+</body>
+
+</html>

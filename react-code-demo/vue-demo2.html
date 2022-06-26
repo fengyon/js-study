@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    let vm = new Vue({
+      el: "#app",
+      data() {
+        return {
+          name: "bilibili",
+          age: 13
+        }
+      },
+      methods: {
+        clickAdd() {
+          this.age = this.age + 1;
+        }
+      },
+      template: '<div>{{name+":"+age}}<button @click="clickAdd()">  +  </button></div>'
+    });
+    function clickAdd(){
+      vm.clickAdd();
+    }
+    function Vue(options) {
+      const vm = this;
+      vm._dom = document.querySelector(options.el);
+      vm.render = new Function(`with(this){ return \`<div>\$\{name\}:\$\{age\}<button onclick="clickAdd()">  +  </button></div>\` }`);
+      vm.$mount = () => {
+        vm._dom.innerHTML = vm.render();
+      }
+      let data = options.data
+      data = vm._data = typeof data === 'function'
+        ? data.call(vm)
+        : data
+      for (let key in data) {
+        Object.defineProperty(vm, key, {
+          get() {
+            return vm._data[key];
+          },
+          set(newVal) {
+            vm._data[key] = newVal;
+            vm.$mount();
+          }
+        })
+      }
+      let methods = options.methods;
+      for (let key in methods) {
+        vm[key] = methods[key].bind(vm);
+      }
+      vm.$mount();
+    }
+
+  </script>
+</body>
+
+</html>

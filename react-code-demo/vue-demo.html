@@ -1,0 +1,60 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+
+  </div>
+  <script>
+    function Vue(options) {
+      this._init(options);
+    }
+    Vue.prototype._init = function (options) {
+      // beforeCreate生命周期
+      initState(this)
+      // created生命周期
+    }
+    Vue.prototype.forceUpdate = function(){
+      this.dom;
+    }
+    function initState(vm) {
+      let date = vm.options.date;
+      date = vm._data = typeof data === 'function'
+        ? data.call(vm)
+        : date
+      def(date, '__vue__', vm)//给数据添加wather对象，这里添加vue实例代替
+      for (let key in data) {
+        Object.defineProperty(vm, key, {
+          get() {
+            return vm['_data'][key]
+          },
+          set(newValue) {
+            vm['_data'][key] = newValue;
+            vm.forceUpdate();
+          }
+        });
+      }
+    }
+    function def(value, key, vm) {
+      if (value !== null && typeof value === 'object') {
+        Object.defineProperty(value, key, {
+          enumerable: false,
+          configurable: false,
+          value: vm //vue中是observer，这里用vue实例代替
+        })
+        // value的数组劫持
+        Object.keys(value).forEach(keyOfV => {
+          def(keyOfV, key, vm);
+        })
+      }
+    }
+  </script>
+</body>
+
+</html>

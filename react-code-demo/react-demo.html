@@ -1,0 +1,78 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div>函数组件</div>
+  <div id="hook-root"></div>
+  <script>
+    // class Component {
+    //   setState(state) {
+    //     this.state = {
+    //       ...this.state,
+    //       ...state
+    //     }
+    //     this.forceUpdate();
+    //   }
+    // }
+    // class Home extends Component {
+    //   constructor(props, context) {
+    //     super();
+    //     this.props = props;
+    //     this.state = {
+    //       name: 'bilibili'
+    //     }
+    //   }
+    //   render() {
+    //     return this.props.number + this.state.name;
+    //   }
+    // }
+    // function domRender(reactEle, dom) {
+    //   dom.innerHTML = reactEle.render();
+    //   reactEle.forceUpdate = () => domRender(reactEle, dom);
+    // }
+    // let myHome = new Home({ number: '12' });
+    // domRender(myHome, document.getElementById('root'));
+
+  </script>
+  <script>
+    let hooks = [];
+    let hook_id = 0;
+    let forceUpdate;
+    function useState(initState) {
+      let id = hook_id++;
+      let obeserver = hooks[id] || {
+        state: initState,
+        setState: function (state) {
+          hooks[id].state = state;
+          forceUpdate();
+        }
+      };
+      hooks[id] = obeserver;
+      return [obeserver.state, obeserver.setState];
+    }
+    function Home(props) {
+      const [name, setName] = useState('bilibili');
+      const [age, setAge] = useState(12)
+      window.setName = setName;
+      window.setAge = setAge;
+      return `${name}:${age}岁`;
+    }
+    function domRender(funEle, dom) {
+      dom.innerHTML = funEle({});
+      forceUpdate = () => {
+        hook_id = 0;
+        domRender(funEle, dom);
+      }
+    }
+    domRender(Home, document.getElementById('hook-root'))
+  </script>
+</body>
+
+</html>
